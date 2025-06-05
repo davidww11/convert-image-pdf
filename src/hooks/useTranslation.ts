@@ -8,13 +8,9 @@ export function useTranslation() {
   const [translation, setTranslation] = useState<Translation>(translations[defaultLanguage])
 
   useEffect(() => {
-    // 尝试从localStorage获取语言设置
-    const savedLanguage = localStorage.getItem('language')
-    if (savedLanguage && translations[savedLanguage]) {
-      setCurrentLanguage(savedLanguage)
-      setTranslation(translations[savedLanguage])
-    }
-    // 默认保持英文，不再自动检测浏览器语言
+    // 固定使用英文，不检查localStorage或浏览器语言
+    setCurrentLanguage(defaultLanguage)
+    setTranslation(translations[defaultLanguage])
   }, [])
 
   const changeLanguage = (languageCode: string) => {

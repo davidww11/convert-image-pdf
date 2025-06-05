@@ -41,14 +41,14 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Language Selector */}
-          <div className="hidden md:block">
+          {/* Language Selector - Hidden */}
+          {/* <div className="hidden md:block">
             <LanguageSelector />
-          </div>
+          </div> */}
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center gap-2">
-            <LanguageSelector />
+            {/* <LanguageSelector /> */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-primary-600 hover:bg-gray-100"
