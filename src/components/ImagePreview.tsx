@@ -14,9 +14,10 @@ import {
   arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
+  rectSortingStrategy,
 } from '@dnd-kit/sortable'
 import { ImageFile } from '@/types'
+import { useTranslation } from '@/hooks/useTranslation'
 import SortableImageItem from './SortableImageItem'
 
 interface ImagePreviewProps {
@@ -32,6 +33,7 @@ export default function ImagePreview({
   onReorder, 
   isDisabled = false 
 }: ImagePreviewProps) {
+  const { t } = useTranslation()
   const [activeId, setActiveId] = useState<string | null>(null)
 
   const sensors = useSensors(
@@ -67,35 +69,33 @@ export default function ImagePreview({
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border">
-      <div className="p-4 border-b">
-        <h3 className="text-lg font-medium text-gray-900">图片预览</h3>
-        <p className="text-sm text-gray-500">拖拽调整图片顺序</p>
+    <div className="bg-gray-50 rounded-lg border-2 border-dashed border-gray-300 p-4">
+      <div className="mb-4">
+        <h3 className="text-sm font-medium text-gray-700 mb-1">{t.previewTitle}</h3>
+        <p className="text-xs text-gray-500">{t.previewSubtitle}</p>
       </div>
 
-      <div className="p-4">
-        <DndContext
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
-        >
-          <SortableContext items={images} strategy={verticalListSortingStrategy}>
-            <div className="space-y-2">
-              {images.map((image, index) => (
-                <SortableImageItem
-                  key={image.id}
-                  image={image}
-                  index={index}
-                  onRemove={onRemove}
-                  isActive={activeId === image.id}
-                  isDisabled={isDisabled}
-                />
-              ))}
-            </div>
-          </SortableContext>
-        </DndContext>
-      </div>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext items={images} strategy={rectSortingStrategy}>
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2">
+            {images.map((image, index) => (
+              <SortableImageItem
+                key={image.id}
+                image={image}
+                index={index}
+                onRemove={onRemove}
+                isActive={activeId === image.id}
+                isDisabled={isDisabled}
+              />
+            ))}
+          </div>
+        </SortableContext>
+      </DndContext>
     </div>
   )
 } 

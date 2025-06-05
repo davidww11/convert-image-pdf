@@ -1,24 +1,10 @@
 'use client'
 
 import { ConversionProgress } from '@/types'
+import { useTranslation } from '@/hooks/useTranslation'
 
 interface ProgressBarProps {
   progress: ConversionProgress
-}
-
-const getStatusText = (status: ConversionProgress['status']) => {
-  switch (status) {
-    case 'preparing':
-      return '准备中...'
-    case 'converting':
-      return '转换中...'
-    case 'completed':
-      return '完成'
-    case 'error':
-      return '出错了'
-    default:
-      return '处理中...'
-  }
 }
 
 const getStatusColor = (status: ConversionProgress['status']) => {
@@ -37,7 +23,23 @@ const getStatusColor = (status: ConversionProgress['status']) => {
 }
 
 export default function ProgressBar({ progress }: ProgressBarProps) {
+  const { t } = useTranslation()
   const { current, total, percentage, status } = progress
+
+  const getStatusText = (status: ConversionProgress['status']) => {
+    switch (status) {
+      case 'preparing':
+        return t.preparing
+      case 'converting':
+        return t.converting_progress
+      case 'completed':
+        return t.completed
+      case 'error':
+        return t.error
+      default:
+        return t.converting_progress
+    }
+  }
 
   return (
     <div className="bg-white rounded-lg shadow-sm border p-4">
@@ -59,19 +61,19 @@ export default function ProgressBar({ progress }: ProgressBarProps) {
 
       {status === 'converting' && (
         <p className="text-xs text-gray-500 mt-2">
-          正在处理第 {current + 1} 张图片...
+          {t.processingImage} {current + 1}...
         </p>
       )}
 
       {status === 'completed' && (
         <p className="text-xs text-green-600 mt-2">
-          PDF 文件已生成，正在下载...
+          {t.pdfGenerated}
         </p>
       )}
 
       {status === 'error' && (
         <p className="text-xs text-red-600 mt-2">
-          转换过程中出现错误，请重试
+          {t.conversionError}
         </p>
       )}
     </div>

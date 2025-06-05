@@ -1,116 +1,116 @@
-# PicToPDF - 图片转PDF工具
+# Image to PDF Converter
 
-一个快速、简洁的图片转PDF工具，支持批量上传、拖拽排序和实时预览。
+A fast, simple image to PDF converter tool that supports batch upload, drag-and-drop reordering, and real-time preview.
 
-## ✨ 功能特点
+## ✨ Features
 
-- 📤 **批量上传**: 支持同时选择多张图片
-- 🖱️ **拖拽排序**: 可视化调整图片顺序
-- 👀 **实时预览**: 即时查看图片列表和顺序
-- 📋 **多格式支持**: JPG、PNG、WEBP、GIF、BMP
-- 📊 **进度显示**: 实时显示转换进度
-- ⚡ **纯前端处理**: 无需上传服务器，保护隐私
-- 🚀 **快速下载**: 一键生成并下载PDF文件
+- 📤 **Batch Upload**: Select multiple images simultaneously
+- 🖱️ **Drag & Drop Reordering**: Visually adjust image order
+- 👀 **Real-time Preview**: Instantly view image list and order
+- 📋 **Multiple Format Support**: JPG, PNG, WEBP, GIF, BMP
+- 📊 **Progress Display**: Real-time conversion progress
+- ⚡ **Client-side Processing**: No server upload required, privacy protected
+- 🚀 **Quick Download**: One-click PDF generation and download
 
-## 🎯 技术栈
+## 🎯 Tech Stack
 
-- **前端**: React 18 + Next.js 14 + TypeScript
-- **样式**: Tailwind CSS
-- **拖拽**: @dnd-kit
-- **PDF生成**: pdf-lib
-- **图标**: Lucide React
+- **Frontend**: React 18 + Next.js 14 + TypeScript
+- **Styling**: Tailwind CSS
+- **Drag & Drop**: @dnd-kit
+- **PDF Generation**: pdf-lib
+- **Icons**: Lucide React
 
-## 🚀 快速开始
+## 🚀 Quick Start
 
-### 安装依赖
+### Install Dependencies
 
 ```bash
 npm install
 ```
 
-### 启动开发服务器
+### Start Development Server
 
 ```bash
 npm run dev
 ```
 
-访问 [http://localhost:3000](http://localhost:3000) 查看应用。
+Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-### 构建生产版本
+### Build for Production
 
 ```bash
 npm run build
 ```
 
-### 启动生产服务器
+### Start Production Server
 
 ```bash
 npm start
 ```
 
-## 📝 使用说明
+## 📝 Usage Instructions
 
-1. **上传图片**: 点击上传区域或拖拽图片文件到页面
-2. **调整顺序**: 拖拽图片项目来重新排序
-3. **预览确认**: 查看图片列表和文件信息
-4. **转换下载**: 点击"转换为PDF"按钮开始处理
+1. **Upload Images**: Click the upload area or drag image files to the page
+2. **Adjust Order**: Drag image items to reorder them
+3. **Preview & Confirm**: Check the image list and file information
+4. **Convert & Download**: Click "Convert to PDF" button to start processing
 
-## ⚙️ 配置选项
+## ⚙️ Configuration Options
 
-可以在 `src/utils/config.ts` 中调整以下配置：
+You can adjust the following configurations in `src/utils/config.ts`:
 
-- `maxFiles`: 最大文件数量（默认：500）
-- `maxTotalSize`: 最大总文件大小（默认：500MB）
-- `supportedFormats`: 支持的图片格式
+- `maxFiles`: Maximum number of files (default: 500)
+- `maxTotalSize`: Maximum total file size (default: 500MB)
+- `supportedFormats`: Supported image formats
 
-## 🔧 项目结构
+## 🔧 Project Structure
 
 ```
 src/
 ├── app/                 # Next.js App Router
-├── components/          # React组件
-│   ├── FileUpload.tsx   # 文件上传组件
-│   ├── ImagePreview.tsx # 图片预览组件
-│   ├── SortableImageItem.tsx # 可排序图片项
-│   ├── ProgressBar.tsx  # 进度条组件
-│   └── ErrorMessage.tsx # 错误提示组件
-├── types/               # TypeScript类型定义
-├── utils/               # 工具函数
-│   ├── config.ts        # 配置文件
-│   └── pdfGenerator.ts  # PDF生成工具
-└── styles/              # 样式文件
+├── components/          # React Components
+│   ├── FileUpload.tsx   # File upload component
+│   ├── ImagePreview.tsx # Image preview component
+│   ├── SortableImageItem.tsx # Sortable image item
+│   ├── ProgressBar.tsx  # Progress bar component
+│   └── ErrorMessage.tsx # Error message component
+├── types/               # TypeScript type definitions
+├── utils/               # Utility functions
+│   ├── config.ts        # Configuration file
+│   └── pdfGenerator.ts  # PDF generation utility
+└── styles/              # Style files
 ```
 
-## 🌟 核心特性
+## 🌟 Core Features
 
-### 拖拽排序
-使用 @dnd-kit 实现流畅的拖拽体验，支持键盘操作和无障碍访问。
+### Drag & Drop Reordering
+Implements smooth drag-and-drop experience using @dnd-kit, with keyboard operation and accessibility support.
 
-### 错误处理
-完善的错误处理机制，包括：
-- 文件格式验证
-- 文件大小检查
-- 总大小限制
-- 转换过程错误
+### Error Handling
+Comprehensive error handling mechanism including:
+- File format validation
+- File size checking
+- Total size limitation
+- Conversion process errors
 
-### 进度反馈
-详细的进度提示：
-- 文件上传进度
-- PDF转换进度
-- 状态实时更新
+### Progress Feedback
+Detailed progress indicators:
+- File upload progress
+- PDF conversion progress
+- Real-time status updates
 
-## 📱 响应式设计
+## 📱 Responsive Design
 
-完全响应式设计，支持桌面端和移动端使用。
+Fully responsive design supporting both desktop and mobile devices.
 
-## 🔒 隐私保护
+## 🔒 Privacy Protection
 
-所有处理都在浏览器本地完成，图片文件不会上传到任何服务器，完全保护用户隐私。
+All processing is done locally in the browser. Image files are never uploaded to any server, ensuring complete user privacy protection.
 
 ## 📄 License
 
 MIT License
 
-## 🤝 贡献
+## 🤝 Contributing
 
-欢迎提交 Issue 和 Pull Request！ 
+Issues and Pull Requests are welcome! 

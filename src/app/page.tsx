@@ -3,13 +3,21 @@
 import { useState, useCallback } from 'react'
 import { ImageFile, ConversionProgress, AppError } from '@/types'
 import { DEFAULT_CONFIG, isValidImageFormat, formatFileSize } from '@/utils/config'
+import { useTranslation } from '@/hooks/useTranslation'
+import Navbar from '@/components/Navbar'
+import HeroSection from '@/components/HeroSection'
 import FileUpload from '@/components/FileUpload'
 import ImagePreview from '@/components/ImagePreview'
 import ProgressBar from '@/components/ProgressBar'
 import ErrorMessage from '@/components/ErrorMessage'
+import Features from '@/components/Features'
+import HowToUse from '@/components/HowToUse'
+import FAQ from '@/components/FAQ'
+import Footer from '@/components/Footer'
 import { PDFGenerator, downloadPDF } from '@/utils/pdfGenerator'
 
 export default function Home() {
+  const { t } = useTranslation()
   const [images, setImages] = useState<ImageFile[]>([])
   const [isConverting, setIsConverting] = useState(false)
   const [conversionProgress, setConversionProgress] = useState<ConversionProgress | null>(null)
@@ -26,7 +34,7 @@ export default function Home() {
     if (images.length + files.length > DEFAULT_CONFIG.maxFiles) {
       errors.push({
         type: 'file_count',
-        message: `最多只能选择 ${DEFAULT_CONFIG.maxFiles} 个文件`
+        message: `${t.errorFileCount} (${DEFAULT_CONFIG.maxFiles})`
       })
       return { valid, errors }
     }
@@ -36,8 +44,8 @@ export default function Home() {
       if (!isValidImageFormat(file.type)) {
         errors.push({
           type: 'file_format',
-          message: `不支持的文件格式: ${file.name}`,
-          details: `支持的格式: JPG, PNG, WEBP, GIF, BMP`
+          message: `${t.errorFileFormat} ${file.name}`,
+          details: t.supportedFormats
         })
         continue
       }
@@ -46,8 +54,8 @@ export default function Home() {
       if (file.size > 50 * 1024 * 1024) {
         errors.push({
           type: 'file_size',
-          message: `文件过大: ${file.name}`,
-          details: `单个文件不能超过 50MB`
+          message: `${t.errorFileSize} ${file.name}`,
+          details: t.maxFileSize
         })
         continue
       }
@@ -56,8 +64,8 @@ export default function Home() {
       if (totalSize + file.size > DEFAULT_CONFIG.maxTotalSize) {
         errors.push({
           type: 'total_size',
-          message: `总文件大小超限`,
-          details: `所有文件总大小不能超过 ${formatFileSize(DEFAULT_CONFIG.maxTotalSize)}`
+          message: t.errorTotalSize,
+          details: `${t.maxTotalSize}: ${formatFileSize(DEFAULT_CONFIG.maxTotalSize)}`
         })
         break
       }
@@ -108,7 +116,7 @@ export default function Home() {
     if (images.length === 0) {
       setError({
         type: 'conversion',
-        message: '请先选择要转换的图片'
+        message: t.errorSelectImages
       })
       return
     }
@@ -127,11 +135,11 @@ export default function Home() {
       downloadPDF(pdfBytes, filename)
 
     } catch (err) {
-      console.error('PDF生成失败:', err)
+      console.error('PDF generation failed:', err)
       setError({
         type: 'conversion',
-        message: 'PDF生成失败',
-        details: err instanceof Error ? err.message : '未知错误'
+        message: t.errorConversion,
+        details: err instanceof Error ? err.message : 'Unknown error'
       })
     } finally {
       setIsConverting(false)
@@ -142,83 +150,119 @@ export default function Home() {
   const totalSize = images.reduce((sum, img) => sum + img.size, 0)
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <h1 className="text-2xl font-bold text-gray-900">PicToPDF</h1>
-          <p className="text-gray-600 mt-1">将图片快速转换为PDF文件</p>
-        </div>
-      </header>
+    <div className="min-h-screen bg-white">
+      {/* Navigation */}
+      <Navbar />
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Upload Section */}
-        <div className="mb-8">
-          <FileUpload 
-            onFilesSelected={handleFilesSelected}
-            isDisabled={isConverting}
-          />
-        </div>
+      {/* Hero Section */}
+      <HeroSection />
 
-        {/* Error Display */}
-        {error && (
-          <div className="mb-6">
-            <ErrorMessage error={error} onDismiss={() => setError(null)} />
-          </div>
-        )}
-
-        {/* Stats */}
-        {images.length > 0 && (
-          <div className="bg-white rounded-lg shadow-sm border p-4 mb-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-6 text-sm text-gray-600">
-                <span>已选择 {images.length} 个文件</span>
-                <span>总大小: {formatFileSize(totalSize)}</span>
+      {/* Converter Section */}
+      <section id="converter" className="py-8 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6">
+            {/* Error Display */}
+            {error && (
+              <div className="mb-6">
+                <ErrorMessage error={error} onDismiss={() => setError(null)} />
               </div>
-              <button
-                onClick={handleConvertToPDF}
-                disabled={isConverting || images.length === 0}
-                className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isConverting ? '转换中...' : '转换为PDF'}
-              </button>
-            </div>
-          </div>
-        )}
+            )}
 
-        {/* Progress Bar */}
-        {isConverting && conversionProgress && (
-          <div className="mb-6">
-            <ProgressBar progress={conversionProgress} />
-          </div>
-        )}
+            {/* Upload Section */}
+            <FileUpload 
+              onFilesSelected={handleFilesSelected}
+              isDisabled={isConverting}
+            />
 
-        {/* Images Preview */}
-        {images.length > 0 && (
-          <ImagePreview
-            images={images}
-            onRemove={handleRemoveImage}
-            onReorder={handleReorderImages}
-            isDisabled={isConverting}
-          />
-        )}
+            {/* Stats and Actions */}
+            {images.length > 0 && (
+              <div className="mt-8">
+                {/* File Stats */}
+                <div className="bg-gradient-to-r from-primary-50 to-blue-50 rounded-lg p-4 mb-6 border border-primary-100">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-6 text-sm">
+                      <span className="flex items-center text-primary-700 font-medium">
+                        <span className="w-2 h-2 bg-primary-500 rounded-full mr-2"></span>
+                        {images.length} {t.selectedFiles}
+                      </span>
+                      <span className="text-gray-600">{t.totalSize} {formatFileSize(totalSize)}</span>
+                    </div>
+                    <button
+                      onClick={() => setImages([])}
+                      className="text-xs text-gray-500 hover:text-red-600 transition-colors"
+                    >
+                      Clear All
+                    </button>
+                  </div>
+                </div>
 
-        {/* Empty State */}
-        {images.length === 0 && (
-          <div className="text-center py-12">
-            <div className="text-gray-400 mb-4">
-              <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-            </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">开始上传图片</h3>
-            <p className="text-gray-500">
-              支持 JPG、PNG、WEBP、GIF、BMP 格式，最多 {DEFAULT_CONFIG.maxFiles} 个文件
-            </p>
+                {/* Convert Button */}
+                <div className="mb-6 flex justify-center">
+                  <button
+                    onClick={handleConvertToPDF}
+                    disabled={isConverting || images.length === 0}
+                    className="bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 disabled:from-gray-400 disabled:to-gray-500 text-white font-bold py-4 px-12 rounded-xl transition-all duration-200 transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed shadow-lg hover:shadow-xl text-lg min-w-[200px]"
+                  >
+                    {isConverting ? (
+                      <span className="flex items-center justify-center">
+                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        {t.converting}
+                      </span>
+                    ) : (
+                      `🔄 ${t.convertButton}`
+                    )}
+                  </button>
+                </div>
+
+                {/* Progress Bar */}
+                {isConverting && conversionProgress && (
+                  <div className="mb-6">
+                    <ProgressBar progress={conversionProgress} />
+                  </div>
+                )}
+
+                {/* Images Preview */}
+                <ImagePreview
+                  images={images}
+                  onRemove={handleRemoveImage}
+                  onReorder={handleReorderImages}
+                  isDisabled={isConverting}
+                />
+              </div>
+            )}
+
+            {/* Empty State */}
+            {images.length === 0 && (
+              <div className="text-center py-12">
+                <div className="text-gray-400 mb-4">
+                  <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">{t.emptyStateTitle}</h3>
+                <p className="text-gray-500">
+                  {t.emptyStateDesc}
+                </p>
+              </div>
+            )}
           </div>
-        )}
-      </main>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <Features />
+
+      {/* How To Use Section */}
+      <HowToUse />
+
+      {/* FAQ Section */}
+      <FAQ />
+
+      {/* Footer */}
+      <Footer />
     </div>
   )
 } 

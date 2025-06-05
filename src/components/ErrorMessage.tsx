@@ -2,6 +2,7 @@
 
 import { AlertCircle, X } from 'lucide-react'
 import { AppError } from '@/types'
+import { useTranslation } from '@/hooks/useTranslation'
 
 interface ErrorMessageProps {
   error: AppError
@@ -28,6 +29,7 @@ const getErrorIcon = (type: AppError['type']) => {
 }
 
 export default function ErrorMessage({ error, onDismiss }: ErrorMessageProps) {
+  const { t } = useTranslation()
   const colorClasses = getErrorColor(error.type)
 
   return (
@@ -54,7 +56,7 @@ export default function ErrorMessage({ error, onDismiss }: ErrorMessageProps) {
               onClick={onDismiss}
               className="inline-flex rounded-md p-1.5 hover:bg-black/5 focus:outline-none focus:ring-2 focus:ring-offset-2"
             >
-              <span className="sr-only">关闭</span>
+              <span className="sr-only">{t.errorClose}</span>
               <X size={16} />
             </button>
           </div>

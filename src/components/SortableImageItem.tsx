@@ -40,60 +40,65 @@ export default function SortableImageItem({
       ref={setNodeRef}
       style={style}
       className={`
-        flex items-center gap-4 p-3 bg-gray-50 rounded-lg border transition-all
+        relative group bg-white border border-gray-200 rounded-lg overflow-hidden transition-all hover:shadow-md
         ${isDragging ? 'opacity-50 z-50' : ''}
         ${isActive ? 'ring-2 ring-primary-500' : ''}
         ${isDisabled ? 'opacity-50' : ''}
       `}
     >
-      {/* Drag Handle */}
-      <div
-        {...attributes}
-        {...listeners}
-        className={`
-          cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600
-          ${isDisabled ? 'cursor-not-allowed' : ''}
-        `}
-      >
-        <GripVertical size={20} />
-      </div>
-
-      {/* Index */}
-      <div className="flex-shrink-0 w-8 h-8 bg-primary-500 text-white rounded-full flex items-center justify-center text-sm font-medium">
-        {index + 1}
-      </div>
-
       {/* Image Preview */}
-      <div className="flex-shrink-0">
+      <div className="aspect-square relative">
         <img
           src={image.url}
           alt={image.name}
-          className="w-16 h-16 object-cover rounded border"
+          className="w-full h-full object-cover"
         />
+        
+        {/* Overlay Controls */}
+        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all flex items-center justify-center">
+          {/* Drag Handle */}
+          <div
+            {...attributes}
+            {...listeners}
+            className={`
+              opacity-0 group-hover:opacity-100 transition-opacity
+              cursor-grab active:cursor-grabbing text-white bg-black bg-opacity-50 rounded-full p-2
+              ${isDisabled ? 'cursor-not-allowed' : ''}
+            `}
+          >
+            <GripVertical size={16} />
+          </div>
+        </div>
+
+        {/* Index Badge */}
+        <div className="absolute top-2 left-2 w-6 h-6 bg-primary-500 text-white rounded-full flex items-center justify-center text-xs font-medium shadow-lg">
+          {index + 1}
+        </div>
+
+        {/* Remove Button */}
+        <button
+          onClick={() => onRemove(image.id)}
+          disabled={isDisabled}
+          className={`
+            absolute top-2 right-2 w-6 h-6 bg-red-500 hover:bg-red-600 text-white rounded-full 
+            flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all shadow-lg
+            ${isDisabled ? 'cursor-not-allowed' : ''}
+          `}
+          title="移除图片"
+        >
+          <X size={12} />
+        </button>
       </div>
 
       {/* File Info */}
-      <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-gray-900 truncate">
+      <div className="p-2">
+        <p className="text-xs font-medium text-gray-900 truncate" title={image.name}>
           {image.name}
         </p>
         <p className="text-xs text-gray-500">
-          {formatFileSize(image.size)} • {image.type.split('/')[1].toUpperCase()}
+          {formatFileSize(image.size)}
         </p>
       </div>
-
-      {/* Remove Button */}
-      <button
-        onClick={() => onRemove(image.id)}
-        disabled={isDisabled}
-        className={`
-          flex-shrink-0 p-1 text-gray-400 hover:text-red-500 transition-colors
-          ${isDisabled ? 'cursor-not-allowed' : ''}
-        `}
-        title="移除图片"
-      >
-        <X size={16} />
-      </button>
     </div>
   )
 } 
