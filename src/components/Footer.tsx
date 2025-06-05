@@ -76,8 +76,33 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom Section */}
+        {/* Related Tools Section */}
         <div className="border-t border-gray-800 mt-12 pt-8">
+          <div className="text-center mb-6">
+            <h3 className="text-lg font-semibold mb-4">Related Tools</h3>
+            <div className="flex flex-wrap justify-center gap-4">
+              <a
+                href="https://www.pullvideo.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg text-sm text-gray-300 hover:text-white transition-colors"
+              >
+                🎵 Twitter Space Downloader
+              </a>
+              <a
+                href="https://x.pullvideo.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg text-sm text-gray-300 hover:text-white transition-colors"
+              >
+                🎥 Twitter Video Downloader
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Section */}
+        <div className="border-t border-gray-800 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-sm text-gray-400 mb-4 md:mb-0">
               © 2024 Image to PDF Converter. All rights reserved.
