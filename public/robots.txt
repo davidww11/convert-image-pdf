@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://convert-pic-pdf.vercel.app/sitemap.xml
+Sitemap: https://pdf.pullvideo.com/sitemap.xml
 
 # Crawl-delay for well-behaved bots
 Crawl-delay: 1

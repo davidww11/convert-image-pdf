@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://convert-pic-pdf.vercel.app'),
+  metadataBase: new URL('https://pdf.pullvideo.com'),
   alternates: {
     canonical: '/',
     languages: {
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Free Image to PDF Converter | Batch Processing | Drag & Drop',
     description: 'Free online image to PDF converter. Convert JPG, PNG, WEBP to PDF instantly. Batch processing, drag & drop reordering, no upload required. Secure & private.',
-    url: 'https://convert-pic-pdf.vercel.app',
+    url: 'https://pdf.pullvideo.com',
     siteName: 'Image to PDF Converter',
     images: [
       {

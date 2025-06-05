@@ -58,7 +58,7 @@
 ### 域名配置
 
 部署完成后，Vercel 会自动生成一个域名，如：
-- `https://pictopdf.vercel.app`
+- `https://pdf.pullvideo.com`
 - `https://pictopdf-git-main-yourusername.vercel.app`
 
 你也可以在 Vercel 控制台配置自定义域名。
