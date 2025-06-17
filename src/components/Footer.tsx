@@ -97,6 +97,14 @@ export default function Footer() {
               >
                 🎥 Twitter Video Downloader
               </a>
+              <a
+                href="https://bloodletter.cc/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg text-sm text-gray-300 hover:text-white transition-colors"
+              >
+                🎮 Bloodletter
+              </a>
             </div>
           </div>
         </div>
